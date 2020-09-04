@@ -36,3 +36,16 @@
     font-family: 'Montserrat', sans-serif;
     cursor: pointer;
 }
+
+.room{
+    cursor: pointer;
+    margin:200px auto;
+    width:200px;
+    height:200px;
+    background-color: #abc;
+}
+
+a{
+    display: block;
+    height:100%;
+}

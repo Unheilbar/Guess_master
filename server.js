@@ -22,6 +22,8 @@ io.on('connection', socket => {
     //Welcome a current user
     socket.emit('message', 'Welcome to chat')
 
+
+
     socket.on('setnickname', data => {
         trash.setNickname(socket, data)
         console.log(socket)

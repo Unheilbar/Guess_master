@@ -1,36 +1,37 @@
-const socket = io()
 
 
-// socket.on('message', message => {
-//     console.log(message)
-// })
 
-const loginForm = document.querySelector('.login-form')
 
-loginForm.addEventListener('submit', (e) => {
-    e.preventDefault()
-    const nickname = e.target.elements.nickname.value
-    setNickname(nickname)
+(function App() {
+    const socket = io()
+
+    const loginForm = document.querySelector('.login-form')
+    const modal = document.getElementById('modal')
+
+    let nickname
+    let users
     
-    // e.preventDefault()
-    // const nickname = e.target.elements.nickname.value
-    // if(!nickname) {
-    //     const p = document.createElement('p')
-    //     p.innerHTML = 'invalid nickname'
-    //     loginForm.appendChild(p)
-    // } else {
-    //     modalBg.classList.remove('bg-active')
-    // }
-})
+    
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault()
+        nickname = e.target.elements.nickname.value
+        setNickname(nickname)
+    })
+    
 
-function setNickname(nickname){
-    socket.emit('setnickname', {nickname:nickname})
-}
-
-socket.on('ready', data => {
-    console.log('congrats, u have been connected')
-    console.log(`userlist: `)
-    for(let user in data.users) {
-        console.log(user)
+    function setNickname(nickname){
+        socket.emit('setnickname', {nickname:nickname})
     }
-})
+    
+    socket.on('ready', data => {
+        closeModal()
+        users = data.users
+        console.log(users)
+    })
+    
+    closeModal = () => {
+        modal.classList.remove('bg-active')
+        modal.style.display = 'none'
+    }
+
+})()
