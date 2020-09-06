@@ -13,9 +13,29 @@
             <form class="login-form">
                 <input type="text" name="name" id="nickname">
                 <button class='signin-btn'>Sign in</button>
-            </form>   
+            </form>
+            <p class="feedback"></p>   
         </div>
     </div>
+    <div class="userlist">
+        <ul id='userlist'>
+
+        </ul>
+    </div>
+    <section>
+        <div class="tracks">
+        <div class="current-track">
+            <p>current track:</p>
+
+        </div>
+        <div class="played-tracks">
+            <p>played tracks:</p>
+            <ul id = 'played tracks'>
+                
+            </ul>
+        </div>
+    </div>
+    </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
     <script src="./js/main.js"></script>
 </body>

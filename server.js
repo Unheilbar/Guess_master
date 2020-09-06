@@ -12,6 +12,7 @@ const room = require('./lib/room')
 
 
 const trash = new room('trash')
+trash.getNewTrack()
 
 //set static folder
 app.use(express.static(path.join(__dirname, 'public')))
@@ -22,7 +23,7 @@ io.on('connection', socket => {
     //Welcome a current user
     socket.emit('message', 'Welcome to chat')
 
-
+    
 
     socket.on('setnickname', data => {
         trash.setNickname(socket, data)
