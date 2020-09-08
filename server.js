@@ -11,7 +11,7 @@ const io = socketio(server)
 const room = require('./lib/room')
 
 
-const trash = new room('trash')
+const trash = new room('trash', io)
 trash.getNewTrack()
 
 //set static folder
@@ -23,11 +23,8 @@ io.on('connection', socket => {
     //Welcome a current user
     socket.emit('message', 'Welcome to chat')
 
-    
-
     socket.on('setnickname', data => {
         trash.setNickname(socket, data)
-        console.log(socket)
 	})
 
     //Runs when client disconnects
@@ -35,6 +32,10 @@ io.on('connection', socket => {
         io.emit('message', 'A user has left the game')
         trash.userLeft(socket)
     })
+})
+
+app.get('/trash', (req, res) => {
+    res.sendFile('./trash.html')
 })
 
 
