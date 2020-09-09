@@ -35,7 +35,7 @@ io.on('connection', socket => {
 })
 
 app.get('/trash', (req, res) => {
-    res.sendFile('./trash.html')
+    res.sendFile(path.join(__dirname, 'trash.html'))
 })
 
 
