@@ -25,7 +25,11 @@ io.on('connection', socket => {
 
     socket.on('setnickname', data => {
         trash.setNickname(socket, data)
-	})
+    })
+    
+    socket.on('guess', data => {
+        trash.guess(data.text, socket)
+    })
 
     //Runs when client disconnects
     socket.on('disconnect', () => {
