@@ -8,13 +8,11 @@
     const feedback = document.querySelector('.feedback')
     const currentTrack = document.querySelector('.current-track')
     const playedTracks = document.getElementById('played-tracks')
-
+    const modalResult = document.getElementById('modal-result')
 
     console.log(playedTracks)
 
-    let nickname
-    let users
-    
+    let nickname   
     
     guessForm.addEventListener('submit', e => {
         e.preventDefault()
@@ -67,9 +65,19 @@
     })
 
     socket.on('gameover', usersData => {
-        console.log(usersData)
+        updateUserlist(usersData)
+        showModalResult(usersData)
         playedTracks.innerHTML=""
+        
     })
+
+    showModalResult = (data) => {
+        modalResult.innerHTML = ""
+        modalResult.classList.add('bg-active')
+        for(let userInfo in data.users){
+            console.log(data.users[userInfo].nickname, data.users[userInfo].points)
+        }
+    }
     
     closeModal = () => {
         modal.classList.remove('bg-active')
@@ -78,10 +86,19 @@
 
     updateUserlist = data => {
         userlist.innerHTML = ''
+        const users = []
         for(let userInfo in data.users) {
             const username = data.users[userInfo].nickname
             const points = data.users[userInfo].points
-            userlist.innerHTML += `<li>${username}  ${points}</li>`
+            users.push({
+                username:username,
+                points:points
+            })
+            
+        }
+        users.sort(function(a, b) {return b.points - a.points})
+        for(let user of users){
+            userlist.innerHTML += `<li>${user.username}  ${user.points}</li>`
         }
     }
 
@@ -89,6 +106,7 @@
 
     playTrack = url => {
         console.log(url)
+        modalResult.classList.remove('bg-active')
         currentTrack.innerHTML = `<video controls="" autoplay="" name="media"><source src="${url}" type="audio/x-m4a"></video>`
         
     }
