@@ -9,10 +9,10 @@
     const currentTrack = document.querySelector('.current-track')
     const playedTracks = document.getElementById('played-tracks')
     const modalResult = document.getElementById('modal-result')
+    console.log(roomName)
 
-    console.log(playedTracks)
-
-    let nickname   
+    let nickname
+    
     
     guessForm.addEventListener('submit', e => {
         e.preventDefault()
@@ -105,7 +105,6 @@
     
 
     playTrack = url => {
-        console.log(url)
         modalResult.classList.remove('bg-active')
         currentTrack.innerHTML = `<video controls="" autoplay="" name="media"><source src="${url}" type="audio/x-m4a"></video>`
         
@@ -113,8 +112,5 @@
 
     trackInfo = (artist, track) => {
         playedTracks.innerHTML += `<li>artist:${artist} track:${track}</li>`
-        console.log(artist, track)
     }
-
-
 })()
