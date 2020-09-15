@@ -11,12 +11,12 @@ const io = socketio(server)
 const room = require('./lib/room')
 const Room = require('./lib/room')
 const roomList = ['trash', 'geniuses']
-const rooms = []
+const rooms = {}
 
 
 for(let i=0; i < roomList.length; i++)  {
-    rooms.push(new Room(roomList[i], io))
-    rooms[i].getNewTrack()
+    rooms[roomList[i]] = new Room(roomList[i], io)
+    rooms[roomList[i]].getNewTrack()
 }
 
 
@@ -26,24 +26,22 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //Run when client connects
 io.on('connection', socket => {
-    //Welcome a current user
-    socket.emit('message', 'Welcome to chat')
-    console.log("hiii")
 
     socket.on('setnickname', data => {
         if(socket.roomname) {
-            socket.roomname.setNickname(socket, data)
+            rooms[socket.roomname].setNickname(socket, data)
         }
         
     })
 
     socket.on('joinroom', data => {
-        
+        socket.roomname = data
+        socket.join(data)
     })
     
     socket.on('guess', data => {
         if(socket.roomname) {
-            trash.guess(data.text, socket)
+           rooms[socket.roomname].guess(data.text, socket)
         }
     })
 
@@ -51,7 +49,7 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
         io.emit('message', 'A user has left the game')
         if(socket.roomname) {
-            rash.userLeft(socket)
+            rooms[socket.roomname].userLeft(socket)
         }
     })
 })

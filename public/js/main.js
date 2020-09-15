@@ -14,6 +14,8 @@
     let nickname
     
     
+    socket.emit('joinroom', roomName)
+
     guessForm.addEventListener('submit', e => {
         e.preventDefault()
         guess(e.target.elements.guess.value)
