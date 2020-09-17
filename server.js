@@ -2,21 +2,18 @@ const path = require('path')
 const http = require('http')
 const express = require('express')
 const socketio = require('socket.io')
-const request = require('request-promise')
-const artistids = require('./utils/artist-ids')
+const config = require('./config').config()
 
 const app = express()
 const server =  http.createServer(app)
 const io = socketio(server)
-const room = require('./lib/room')
 const Room = require('./lib/room')
-const roomList = ['trash', 'geniuses']
 const rooms = {}
 
 
-for(let i=0; i < roomList.length; i++)  {
-    rooms[roomList[i]] = new Room(roomList[i], io)
-    rooms[roomList[i]].getNewTrack()
+for(let i=0; i < config.rooms.length; i++)  {
+    rooms[config.rooms[i]] = new Room(config.rooms[i], io)
+    rooms[config.rooms[i]].start()
 }
 
 
@@ -37,6 +34,7 @@ io.on('connection', socket => {
     socket.on('joinroom', data => {
         socket.roomname = data
         socket.join(data)
+        console.log('something')
     })
     
     socket.on('guess', data => {
@@ -56,7 +54,7 @@ io.on('connection', socket => {
 
 app.get('/:room', (req, res) => {
     let room = req.params.room
-    if(roomList.indexOf(room)==-1){
+    if(config.rooms.indexOf(room)==-1){
         res.status(404)
         res.send('Are you lost?>)')
     } else {
@@ -65,8 +63,4 @@ app.get('/:room', (req, res) => {
 })
 
 
-
-
-const PORT = 3000
-
-server.listen(PORT, () => {console.log(`Server running on port ${PORT}`)})
+server.listen(config.port, () => {console.log(`Server running on port ${config.port}`)})
