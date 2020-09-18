@@ -1,7 +1,8 @@
 exports.config = function() {
-    this.port = 5000
+    this.port = 3000
     this.rooms = ['trash', 'geniuses']
     this.songsPerRound = 3
+    this.minNicknameLength = 14
     this.ids = {
         trash:[
             1065981054, //b

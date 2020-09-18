@@ -9,6 +9,7 @@
     const currentTrack = document.querySelector('.current-track')
     const playedTracks = document.getElementById('played-tracks')
     const modalResult = document.getElementById('modal-result')
+    let audio
     console.log(roomName)
 
     let nickname
@@ -108,7 +109,13 @@
 
     playTrack = url => {
         modalResult.classList.remove('bg-active')
-        currentTrack.innerHTML = `<video controls="" autoplay="" name="media"><source src="${url}" type="audio/x-m4a"></video>`
+        //currentTrack.innerHTML = `<video controls="" autoplay="" name="media"><source src="${url}" type="audio/x-m4a"></video>`
+        audio = new Audio()
+        audio.src = url
+        audio.preload = 'auto'
+        audio.play()
+        audio.volume = 0.6
+        console.log('here')
         
     }
 
