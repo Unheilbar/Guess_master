@@ -34,20 +34,18 @@ header a{
     margin: 0 auto;
 }
 
-.header{
+header{
     width: 100%;
     display: flex;
-    padding-top:50px;
+    margin-top:20px;
 }
 
 .nav{
     display: flex;
     align-items: center;
 }
-
 .header__logo{
-    margin-right: auto;
-    margin-left:-20px;
+    margin-right:auto;
 }
 
 menu{
@@ -56,14 +54,14 @@ menu{
 
 .icon{
     background-image: url('../img/GM-logo.png');
-    background-size: 100px 100px;
-    width:100px;
-    height:100px;
+    background-size: 70px 70px;
+    width:70px;
+    height:70px;
 }
 
 .brand{
-    width:100px;
-    height:100px;
+    width:70px;
+    height:70px;
 }
 
 .menu{
@@ -79,11 +77,15 @@ menu{
     font-size: 16px;
 }
 
+.about{
+    margin-top:30px;
+}
+
 .description{
     display: flex;
     justify-content: space-between;
     color:#c5c6c7;
-    margin-top:80px;
+    margin-top:0px;
     font-size: 14px;
 }
 
@@ -92,9 +94,8 @@ menu{
 }
 
 .rooms {
-    margin-top:80px;
+    margin-top:50px;
 }
-
 
 .modal-bg{
     position:fixed;
@@ -169,4 +170,23 @@ a{
     background-image:url('../img/geniuses.png');
     background-size:cover;
     background-repeat: no-repeat;
+}
+
+.footer{
+    margin-top:70px;
+    border-top:rgba(94, 250, 242, 0.4) solid 1px;
+    font-size:12px;
+    line-height: 18px
+}
+
+.footer__content{
+    color:#c5c6c7;
+    display: flex;
+    justify-content: space-between;
+    border-top: rgba(69, 162, 158, 0.4) solid 1px;
+    padding-top:30px;
+}
+
+.footer__contacts{
+    width:72px;
 }
