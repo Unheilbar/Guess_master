@@ -1,19 +1,14 @@
+
+import {Visualizer} from './visualizer.js'
 (function App() {
     const socket = io()
-
-    const loginForm = document.querySelector('.login-form')
+    const visualizer = new Visualizer()
     const guessForm = document.querySelector('.guess-form')
-    const modal = document.getElementById('modal')
     const userlist = document.getElementById('userlist')
     const feedback = document.querySelector('.feedback')
-    const currentTrack = document.querySelector('.current-track')
     const playedTracks = document.getElementById('played-tracks')
-    const modalResult = document.getElementById('modal-result')
-    let audio
-    console.log(roomName)
-
-    let nickname
-    
+    const authModal = document.querySelector('modal__auth')
+    let users
     
     socket.emit('joinroom', roomName)
 
@@ -23,31 +18,22 @@
         e.target.elements.guess.value = ''
     })
 
-    guess = text => {
+    const guess = text => {
         if(text!='') {
             socket.emit('guess', {text:text})
         }
     }
 
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault()
-        nickname = e.target.elements.nickname.value
-        setNickname(nickname)
-    })
-    
-
-    setNickname = nickname => {
+    const setNickname = nickname => {
         socket.emit('setnickname', {nickname:nickname})
     }
 
-    invalidNickname = data => {
+    const invalidNickname = data => {
         feedback.innerHTML = data.feedback
     }
     
     socket.on('ready', data => {
-        closeModal()
         users = data.users
-
         updateUserlist(data)
     })
 
@@ -69,25 +55,11 @@
 
     socket.on('gameover', usersData => {
         updateUserlist(usersData)
-        showModalResult(usersData)
         playedTracks.innerHTML=""
         
     })
 
-    showModalResult = (data) => {
-        modalResult.innerHTML = ""
-        modalResult.classList.add('bg-active')
-        for(let userInfo in data.users){
-            console.log(data.users[userInfo].nickname, data.users[userInfo].points)
-        }
-    }
-    
-    closeModal = () => {
-        modal.classList.remove('bg-active')
-        modal.style.display = 'none'
-    }
-
-    updateUserlist = data => {
+    const updateUserlist = data => {
         userlist.innerHTML = ''
         const users = []
         for(let userInfo in data.users) {
@@ -105,21 +77,28 @@
         }
     }
 
-    
-
-    playTrack = url => {
-        modalResult.classList.remove('bg-active')
-        //currentTrack.innerHTML = `<video controls="" autoplay="" name="media"><source src="${url}" type="audio/x-m4a"></video>`
-        audio = new Audio()
-        audio.src = url
-        audio.preload = 'auto'
-        audio.play()
-        audio.volume = 0.6
-        console.log('here')
-        
+    const playTrack = url => {
+        visualizer.setNewTrack(url)
     }
 
-    trackInfo = (artist, track) => {
+    const trackInfo = (artist, track) => {
         playedTracks.innerHTML += `<li>artist:${artist} track:${track}</li>`
     }
+
+    const authorization = () => {
+        document.body.style.overflowY='none'
+        const login = document.getElementById('login')
+        const button = document.getElementById('login-button')
+        button.onclick = () => {
+            const nickname = login.value
+            setNickname(nickname.trim())
+        }
+        login.addEventListener('keyup', e => {
+            if(e.key == 'Enter'){
+                button.click()
+            }
+        })
+    }
+
+    authorization()
 })()

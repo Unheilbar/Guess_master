@@ -13,16 +13,40 @@
     </style>
 </head>
 <body>
-    <div class="modal-bg bg-active" id="modal">
-        <div class="modal">
-            <h2>You're joining geniuses music room</h2>
-            <form class="login-form">
-                <input type="text" name="name" id="nickname">
-                <button class='signin-btn'>Sign in</button>
-            </form>
-            <p class="feedback"></p>   
+    <div class="container">
+    <header>        
+          <div class="nav">
+            <div class="header__logo">
+              <a href="/" class="brand">
+                <div class="icon"></div>
+              </a>
+            </div>
+  
+            <ul class="menu">
+              <li>
+                <a href="/"> Домашняя </a>
+              </li>
+              <li>
+                <a href="/"> Лидеры </a>
+              </li>
+              <li>
+                <a href="/"> Войти </a>
+              </li>
+              <li>
+                <a href="/"> Зарегистрироваться </a>
+              </li>
+            </ul>
+          </div>
+      </header>
+      <div class="player">        
+        <div class="player__display">          
+        <canvas id="oscilloscope"></canvas>
+        <div class="statusbar">
+            <div class="statusbar__filler" id="filler">    
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
     <div class="userlist">
         <ul id='userlist'>
 
@@ -31,9 +55,7 @@
     <section>
         <div class="tracks">
         <div class="current-track">
-            <p>current track:</p>
-            
-
+            <p>current track:</p>            
         </div>
         <div class="guess-block">
             <form class="guess-form">
@@ -48,14 +70,38 @@
                 
             </ul>
         </div>
-
-        <div class="modal-bg" id='modal-result'>
-
-        </div>
-        
     </div>
     </section>
+    <section class="footer">
+        <div class="footer__content">
+          <div class="footer__text">
+            <p>Оригинальная идея - beatquest.fm.</p>
+            <p>Во время создания подсмотрел архитектуру у проекта binb.com.</p>
+            <p>Для загрузки превью используется API itunes ©Unheilbar</p>
+          </div>
+          <div class="footer__contacts">
+            <iframe id="github-button" allowtransparency="true" frameborder="0" scrolling="0" src="//ghbtns.com/github-btn.html?user=unheilbar&amp;repo=guess_master&amp;type=watch&amp;count=true"></iframe>
+          </div>
+        </div>
+      </section>
+</div>
+<div class="modal__drop"></div>
+<div class="modal__auth">
+    <div class="modal__header">
+        Вы зашли в комнату гениев
+    </div>
+    <div class="modal__body">
+        Введите никнейм
+    </div>
+    <div class="modal__footer">
+        <input type="text" class='input__nickname' id='login' maxlength="14" autofocus>
+        <button class='submit__nickname-button' id='login-button'>Войти</button>
+    </div>
+    <p class="feedback"></p>
+</div>
+
+    <script src="./js/visualizer.js" type='module'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
-    <script src="./js/main.js"></script>
+    <script src="./js/main.js" type="module"></script>
 </body>
 </html>
