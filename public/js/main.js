@@ -5,9 +5,10 @@ import {Visualizer} from './visualizer.js'
     const visualizer = new Visualizer()
     const guessForm = document.querySelector('.guess-form')
     const userlist = document.getElementById('userlist')
-    const feedback = document.querySelector('.feedback')
+    const roomStatus = document.getElementById('room__status')
+    
     const playedTracks = document.getElementById('played-tracks')
-    const authModal = document.querySelector('modal__auth')
+
     let users
     
     socket.emit('joinroom', roomName)
@@ -20,7 +21,7 @@ import {Visualizer} from './visualizer.js'
 
     const guess = text => {
         if(text!='') {
-            socket.emit('guess', {text:text})
+            socket.emit('guess', text)
         }
     }
 
@@ -29,12 +30,16 @@ import {Visualizer} from './visualizer.js'
     }
 
     const invalidNickname = data => {
+        const feedback = document.querySelector('.feedback')
         feedback.innerHTML = data.feedback
     }
     
-    socket.on('ready', data => {
+    socket.on('ready', data => {        
         users = data.users
+        console.log(users)
         updateUserlist(data)
+        roomStatus.innerHTML = 'Дождитесь окончания текущего трека!'
+        closeAuthModal()
     })
 
     socket.on('updateuserlist', data => {
@@ -46,17 +51,34 @@ import {Visualizer} from './visualizer.js'
     })
 
     socket.on('playtrack', data => {
-        playTrack(data.trackUrl)
+        visualizer.setNewTrack(data.trackUrl)
     })
 
     socket.on('trackinfo', data => {
         trackInfo(data.artistName, data.trackName)
     })
 
+
+
+    socket.on('statusupdate', status => {
+        switch (status) {
+            case 0:
+                roomStatus.innerHTML = 'Что это за трек?'
+                break
+            case 1:
+                roomStatus.innerHTML = 'Загружается следующий трек'
+                break
+            case 3:
+                roomStatus.innerHTML = 'Начинаем следующий раунд...'
+                break
+        }
+    }) 
+        
+    
+
     socket.on('gameover', usersData => {
         updateUserlist(usersData)
         playedTracks.innerHTML=""
-        
     })
 
     const updateUserlist = data => {
@@ -77,15 +99,26 @@ import {Visualizer} from './visualizer.js'
         }
     }
 
-    const playTrack = url => {
-        visualizer.setNewTrack(url)
-    }
-
     const trackInfo = (artist, track) => {
         playedTracks.innerHTML += `<li>artist:${artist} track:${track}</li>`
     }
 
     const authorization = () => {
+        //document.body.innerHTML+=
+    //     ('<div class="modal__drop"></div>'+
+    //         '<div class="modal__auth">'+
+    //         '<div class="modal__header">'+
+    //             'Вы зашли в комнату гениев'+
+    //         '</div>'+
+    //         ' <div class="modal__body">'+
+    //                 'Введите никнейм'+
+    //             '</div>'+
+    //         '<div class="modal__footer">'+
+    //     '<input type="text" class="input__nickname" id="login" maxlength="14" autofocus>'+
+    //     '<button class="submit__nickname-button" id="login-button">Войти</button>'+
+    // '</div>'+
+    // '<p class="feedback"></p>'+
+    // '</div>')
         document.body.style.overflowY='none'
         const login = document.getElementById('login')
         const button = document.getElementById('login-button')
@@ -98,6 +131,11 @@ import {Visualizer} from './visualizer.js'
                 button.click()
             }
         })
+    }
+
+    const closeAuthModal = () => {
+        document.querySelector('.modal__auth').remove()
+        document.querySelector('.modal__drop').remove()
     }
 
     authorization()

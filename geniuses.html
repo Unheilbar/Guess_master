@@ -47,12 +47,16 @@
           </div>
         </div>
       </div>
+      <div class="room__status">
+        <p id='room__status'>Ожидаем подключения...</p>
+      </div>
     <div class="userlist">
         <ul id='userlist'>
 
         </ul>
     </div>
     <section>
+        
         <div class="tracks">
         <div class="current-track">
             <p>current track:</p>            
@@ -77,7 +81,8 @@
           <div class="footer__text">
             <p>Оригинальная идея - beatquest.fm.</p>
             <p>Во время создания подсмотрел архитектуру у проекта binb.com.</p>
-            <p>Для загрузки превью используется API itunes ©Unheilbar</p>
+            <p>Для загрузки превью используется API itunes </p>
+            <p>©Unheilbar</p>
           </div>
           <div class="footer__contacts">
             <iframe id="github-button" allowtransparency="true" frameborder="0" scrolling="0" src="//ghbtns.com/github-btn.html?user=unheilbar&amp;repo=guess_master&amp;type=watch&amp;count=true"></iframe>
@@ -86,20 +91,19 @@
       </section>
 </div>
 <div class="modal__drop"></div>
-<div class="modal__auth">
-    <div class="modal__header">
-        Вы зашли в комнату гениев
+          <div class="modal__auth">
+          <div class="modal__header">
+              Вы зашли в комнату гениев
+         </div>
+              <div class="modal__body">
+                     Введите никнейм
+                 </div>
+             <div class="modal__footer">
+        <input type="text" class="input__nickname" id="login" maxlength="14" autofocus>
+         <button class="submit__nickname-button" id="login-button">Войти</button>
+     </div>
+     <p class="feedback"></p>
     </div>
-    <div class="modal__body">
-        Введите никнейм
-    </div>
-    <div class="modal__footer">
-        <input type="text" class='input__nickname' id='login' maxlength="14" autofocus>
-        <button class='submit__nickname-button' id='login-button'>Войти</button>
-    </div>
-    <p class="feedback"></p>
-</div>
-
     <script src="./js/visualizer.js" type='module'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
     <script src="./js/main.js" type="module"></script>

@@ -7,6 +7,7 @@
 body{
     font-family: 'Exo 2';
     background-image: url('../img/bg-img.png');
+    color:#c5c6c7;
 }
 
 a{
@@ -37,12 +38,15 @@ header a{
 header{
     width: 100%;
     display: flex;
+    
     margin-top:20px;
 }
 
 .nav{
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width:100%;
 }
 .header__logo{
     margin-right:auto;
@@ -333,3 +337,8 @@ input[type=text], textarea, select, button {
     transition: 1s;
 }
 
+.room__status{
+    display:flex;
+    width:350px;
+    justify-content: center;
+}

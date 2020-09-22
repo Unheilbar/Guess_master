@@ -16,23 +16,21 @@ export function Visualizer() {
 
   
     // draw an oscilloscope of the current audio source
-    this.drawOscilloscope = audio => {
+    this.drawOscilloscope = (startTime, audio) => {
         const audioCtx = new AudioContext()
         let analyser = audioCtx.createAnalyser()
         const source = audioCtx.createMediaElementSource(audio)
         source.connect(audioCtx.destination) 
         source.connect(analyser)      
-        console.log(audioCtx.getOutputTimestamp())
         analyser.fftSize = 256;
         let bufferLengthAlt = analyser.frequencyBinCount;
         let dataArrayAlt = new Uint8Array(bufferLengthAlt);
         analyser.getByteTimeDomainData(dataArrayAlt);
-        console.log(dataArrayAlt)
-        const startTime = Date.now()
         const drawAlt = () => {     
           let drawVisual = requestAnimationFrame(drawAlt);
           if(Date.now() - startTime > 30000) {
             cancelAnimationFrame(drawVisual)
+            console.log('hi there')
             this.setLoadingStatus()
             return
           }
@@ -43,7 +41,6 @@ export function Visualizer() {
           let barWidth = (this.WIDTH / bufferLengthAlt);
           let barHeight;
           let x = 0;
-          console.log('there')
           for(var i = 0; i < bufferLengthAlt; i++) {        
             barHeight = dataArrayAlt[i];
             this.canvasCtx.shadowBlur = barHeight*0.2;
@@ -51,6 +48,8 @@ export function Visualizer() {
             this.canvasCtx.fillStyle = `rgba(${69+barHeight/5},${162+barHeight/2},${158+barHeight/2}, ${barHeight/150})`;
             this.canvasCtx.fillRect(x,50,barWidth,barHeight/5-70/(i+1))      
             this.canvasCtx.fillRect(x,50,barWidth,-barHeight/5+70/(i+1))
+            this.canvasCtx.fillRect(x+1,50,barWidth,-barHeight/5+70/(i+1)) 
+            //this.canvasCtx.fillRect(0, 50, this.WIDTH, 2)
             x += barWidth + 1;
           }
         }
@@ -76,17 +75,21 @@ export function Visualizer() {
         audio.play()
         audio.preload = 'auto'
         audio.volume = this.volume
-        this.drawOscilloscope(audio)
+        this.drawOscilloscope(Date.now(), audio)
         this.playerAnimation(Date.now() + 30000)  
     }
     
     this.setLoadingStatus = () => {
-        this.canvasCtx.fillRect(20, 0, this.WIDTH, this.HEIGHT)
-        this.canvasCtx.clearRect(0, 0, this.WIDTH, this.HEIGHT)
+        // this.canvasCtx.fillRect(20, 0, this.WIDTH, this.HEIGHT)
+        this.canvasCtx.fillStyle = 'rgb(0, 0, 0)';
+        this.canvasCtx.fillRect(0, 0, this.WIDTH, this.HEIGHT);
+        this.canvasCtx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
+         this.canvasCtx.fillStyle = '#66fcf1'
+        //this.canvasCtx.fillRect(0, 0, this.WIDTH, 10000)
+       
         this.canvasCtx.font = '14px Exo'
-        // Fill with gradient
-        this.canvasCtx.fillStyle = '#66fcf1';
-        this.canvasCtx.fillText("Загрузка следующего трека...", 10, 90);
+
+        this.canvasCtx.fillText("ахуенная анимация загрузки", 10, 90);
         console.log('painting on canvas!!111')
     }
 }

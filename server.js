@@ -34,12 +34,11 @@ io.on('connection', socket => {
     socket.on('joinroom', data => {
         socket.roomname = data
         socket.join(data)
-        console.log('something')
     })
     
     socket.on('guess', data => {
-        if(socket.roomname) {
-           rooms[socket.roomname].guess(data.text, socket)
+        if(socket.roomname && typeof data === "string") {
+           rooms[socket.roomname].guess(data, socket)
         }
     })
 
