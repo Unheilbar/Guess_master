@@ -35,6 +35,12 @@ io.on('connection', socket => {
         }
     })
 
+    socket.on('getstatus', function() {
+		if (socket.roomname) {
+			rooms[socket.roomname].sendStatus(socket);
+		}
+	})
+
     //Runs when client disconnects
     socket.on('disconnect', () => {
         io.emit('message', 'A user has left the game')

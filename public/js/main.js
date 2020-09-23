@@ -70,18 +70,30 @@ function App() {
         })
     }
 
-    const updateRoomStatus = (status, connected) => {
-        console.log(status, connected)
+    const getRoomStatus = () => {
+        socket.emit('getstatus')
     }
-
+  
     const setNickname = data => {
         socket.emit('setnickname', data)
     }
 
+    const userJoin = data => {
+        updateUserlist(data)
+    }
+
+    const userLeft = data => {
+        updateUserlist(data)
+    }
+
     const ready = data => {     //getting usersData, trackscount, roomstatus
-        updateRoomStatus(data.status, true)
+        getRoomStatus()
         updateUserlist(data)
         updateSummary(data.trackscount)
+    }
+
+    const setStatus = data => {         //0 Дождитесь окончания песни/1 - Загружается следующая песня/2 - Раунд скоро закончится!/3 - Новая игра скоро начнется!
+        console.log(`roomStatus: ${data.status}, songtimeleft: ${data.timeleft}`)
     }
 
     authorization()
@@ -104,8 +116,8 @@ function App() {
         }
     }
 
-    const updateSummary = trackscount => {
-        console.log(trackscount)
+    const updateSummary = trackscount => {        //Displays user statistics(rank, trackscount, points)
+        console.log(`trackscount: ${trackscount}`)
     }
 
     //Socket handlers:
@@ -114,6 +126,13 @@ function App() {
         feedback.innerHTML = data.feedback
     })
     
+    socket.on('newuser', data => {
+        userJoin(data)
+    })
+
+    socket.on('userleft', data => {
+        userLeft(data)
+    })
 
     socket.on('ready', data => {
         closeModalDrop()
@@ -121,8 +140,9 @@ function App() {
         ready(data)
     })
 
-
-
+    socket.on('statusupdate', data => {
+        setStatus(data)
+    })
 
 }
 
