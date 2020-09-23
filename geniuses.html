@@ -1,111 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <script>const roomName = "geniuses";</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>geniuses</title>
-    <link href="./css/styles.css" rel="stylesheet">
-    <style>
-        body{
-            color:white
-        }
-    </style>
+  <script>const roomName = "geniuses";</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>geniuses</title>
+  <link href="./css/styles.css" rel="stylesheet">
+  <style>
+    body {
+      color: white
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-    <header>        
-          <div class="nav">
-            <div class="header__logo">
-              <a href="/" class="brand">
-                <div class="icon"></div>
-              </a>
-            </div>
-  
-            <ul class="menu">
-              <li>
-                <a href="/"> Домашняя </a>
-              </li>
-              <li>
-                <a href="/"> Лидеры </a>
-              </li>
-              <li>
-                <a href="/"> Войти </a>
-              </li>
-              <li>
-                <a href="/"> Зарегистрироваться </a>
-              </li>
-            </ul>
-          </div>
-      </header>
-      <div class="player">        
-        <div class="player__display">          
+  <div class="container">
+    <header>
+      <div class="nav">
+        <div class="header__logo">
+          <a href="/" class="brand">
+            <div class="icon"></div>
+          </a>
+        </div>
+
+        <ul class="menu">
+          <li>
+            <a href="/"> Домашняя </a>
+          </li>
+          <li>
+            <a href="/"> Лидеры </a>
+          </li>
+          <li>
+            <a href="/"> Войти </a>
+          </li>
+          <li>
+            <a href="/"> Зарегистрироваться </a>
+          </li>
+        </ul>
+      </div>
+    </header>
+    <div class="player">
+      <div class="player__display">
         <canvas id="oscilloscope"></canvas>
         <div class="statusbar">
-            <div class="statusbar__filler" id="filler">    
-            </div>
+          <div class="statusbar__filler" id="filler">
           </div>
         </div>
       </div>
-      <div class="room__status">
-        <p id='room__status'>Ожидаем подключения...</p>
-      </div>
+    </div>
+    <div class="room__status">
+      <p id='room__status'>Ожидаем подключения...</p>
+    </div>
     <div class="userlist">
-        <ul id='userlist'>
-
-        </ul>
+      <ul id='userlist'>
+      </ul>
     </div>
     <section>
-        
-        <div class="tracks">
+
+      <div class="tracks">
         <div class="current-track">
-            <p>current track:</p>            
+          <p>current track:</p>
         </div>
         <div class="guess-block">
-            <form class="guess-form">
-                <input type="text" name="guess" id="guess" placeholder="Enter your guess here">
-                <button class='signin-btn'>try</button>
-            </form>
+          <form class="guess-form">
+            <input type="text" name="guess" id="guess" placeholder="Enter your guess here">
+            <button class='signin-btn'>try</button>
+          </form>
         </div>
-        
+
         <div class="played-tracks">
-            <p>played tracks:</p>
-            <ul id = 'played-tracks'>
-                
-            </ul>
+          <p>played tracks:</p>
+          <ul id='played-tracks'>
+
+          </ul>
         </div>
-    </div>
+      </div>
     </section>
     <section class="footer">
-        <div class="footer__content">
-          <div class="footer__text">
-            <p>Оригинальная идея - beatquest.fm.</p>
-            <p>Во время создания подсмотрел архитектуру у проекта binb.com.</p>
-            <p>Для загрузки превью используется API itunes </p>
-            <p>©Unheilbar</p>
-          </div>
-          <div class="footer__contacts">
-            <iframe id="github-button" allowtransparency="true" frameborder="0" scrolling="0" src="//ghbtns.com/github-btn.html?user=unheilbar&amp;repo=guess_master&amp;type=watch&amp;count=true"></iframe>
-          </div>
+      <div class="footer__content">
+        <div class="footer__text">
+          <p>Оригинальная идея - beatquest.fm.</p>
+          <p>Во время создания подсмотрел архитектуру у проекта binb.com.</p>
+          <p>Для загрузки превью используется API itunes </p>
+          <p>©Unheilbar</p>
         </div>
-      </section>
-</div>
-<div class="modal__drop"></div>
-          <div class="modal__auth">
-          <div class="modal__header">
-              Вы зашли в комнату гениев
-         </div>
-              <div class="modal__body">
-                     Введите никнейм
-                 </div>
-             <div class="modal__footer">
-        <input type="text" class="input__nickname" id="login" maxlength="14" autofocus>
-         <button class="submit__nickname-button" id="login-button">Войти</button>
-     </div>
-     <p class="feedback"></p>
+        <div class="footer__contacts">
+          <iframe id="github-button" allowtransparency="true" frameborder="0" scrolling="0"
+            src="//ghbtns.com/github-btn.html?user=unheilbar&amp;repo=guess_master&amp;type=watch&amp;count=true"></iframe>
+        </div>
+      </div>
+    </section>
+  </div>
+  <!-- <div class="modal__drop"></div> -->
+  <!-- <div class="modal__auth">
+    <div class="modal__header">
+      Вы зашли в комнату гениев
     </div>
-    <script src="./js/visualizer.js" type='module'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
-    <script src="./js/main.js" type="module"></script>
+    <div class="modal__body">
+      Введите никнейм
+    </div>
+    <div class="modal__footer">
+      <input type="text" class="input__nickname" id="login" maxlength="14" autofocus>
+      <button class="submit__nickname-button" id="login-button">Войти</button>
+    </div>
+    <p class="feedback"></p>
+  </div> -->
+  <script src="./js/visualizer.js" type='module'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
+  <script src="./js/main.js" type="module"></script>
 </body>
+
 </html>

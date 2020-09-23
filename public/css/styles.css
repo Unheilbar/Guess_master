@@ -228,7 +228,7 @@ a{
     left: 0;
     z-index: 1040;
     background-color: #000000;
-    opacity:0.8;
+    opacity:0.6;
 }
 
 .modal__auth{
@@ -341,4 +341,11 @@ input[type=text], textarea, select, button {
     display:flex;
     width:350px;
     justify-content: center;
+}
+
+#feedback{
+    color:rgba(132, 220, 255, 1);
+    margin:auto;
+    margin-bottom:5px;
+    width:300px;
 }

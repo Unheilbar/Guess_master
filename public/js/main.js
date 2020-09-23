@@ -1,85 +1,90 @@
 
 import {Visualizer} from './visualizer.js'
-(function App() {
+function App() {
+    // set Elements
     const socket = io()
     const visualizer = new Visualizer()
     const guessForm = document.querySelector('.guess-form')
     const userlist = document.getElementById('userlist')
-    const roomStatus = document.getElementById('room__status')
-    
+    const roomStatus = document.getElementById('room__status')   
     const playedTracks = document.getElementById('played-tracks')
 
-    let users
-    
-    socket.emit('joinroom', roomName)
+    let modalDrop
+    let authModalContent
 
-    guessForm.addEventListener('submit', e => {
-        e.preventDefault()
-        guess(e.target.elements.guess.value)
-        e.target.elements.guess.value = ''
-    })
+    //DOM manipulations
+    const showAuthModal = () => {
+        showModalDrop()
+        authModalContent = document.createElement('div')
+        authModalContent.innerHTML = 
+            '<div class="modal__drop"></div>'+
+            '<div class="modal__auth">'+
+            '<div class="modal__header">'+
+                'Вы зашли в комнату гениев'+
+            '</div>'+
+            ' <div class="modal__body">'+
+                    'Введите никнейм'+
+                '</div>'+
+            '<div class="modal__footer">'+
+            '<input type="text" class="input__nickname" id="login" maxlength="14" autofocus>'+
+            '<button class="submit__nickname-button" id="login-button">Войти</button>'+
+            '</div>'+
+            '<div id="feedback"></div>'+
+            '</div>'
+        document.body.appendChild(authModalContent)
+        document.body.style.overflowY='none'
+    }
 
-    const guess = text => {
-        if(text!='') {
-            socket.emit('guess', text)
+    const closeAuthModal = () => {
+        authModalContent.remove()
+    }
+
+    const showModalDrop = () => {
+        modalDrop = document.createElement('div')        
+        modalDrop.classList.add('modal__drop')
+        document.body.appendChild(modalDrop)
+    }
+
+    const closeModalDrop = () => {
+        modalDrop.remove()
+    }
+
+    const authorization = () => {
+        socket.emit('joinroom', roomName)
+        showAuthModal()
+        const login = document.getElementById('login')
+        const button = document.getElementById('login-button')
+        button.onclick = () => {
+            const nickname = login.value
+            const data = {
+                roomname:roomName,
+                nickname:nickname
+            }
+            setNickname(data)
         }
+        login.addEventListener('keyup', e => {
+            e.preventDefault()
+            if(e.key == 'Enter'){
+                button.click()
+            }
+        })
     }
 
-    const setNickname = nickname => {
-        socket.emit('setnickname', {nickname:nickname})
+    const updateRoomStatus = (status, connected) => {
+        console.log(status, connected)
     }
 
-    const invalidNickname = data => {
-        const feedback = document.querySelector('.feedback')
-        feedback.innerHTML = data.feedback
+    const setNickname = data => {
+        socket.emit('setnickname', data)
     }
-    
-    socket.on('ready', data => {        
-        users = data.users
-        console.log(users)
+
+    const ready = data => {     //getting usersData, trackscount, roomstatus
+        updateRoomStatus(data.status, true)
         updateUserlist(data)
-        roomStatus.innerHTML = 'Дождитесь окончания текущего трека!'
-        closeAuthModal()
-    })
+        updateSummary(data.trackscount)
+    }
 
-    socket.on('updateuserlist', data => {
-        updateUserlist(data)
-    })
-
-    socket.on('invalidnickname', data => {
-        invalidNickname(data)
-    })
-
-    socket.on('playtrack', data => {
-        visualizer.setNewTrack(data.trackUrl)
-    })
-
-    socket.on('trackinfo', data => {
-        trackInfo(data.artistName, data.trackName)
-    })
-
-
-
-    socket.on('statusupdate', status => {
-        switch (status) {
-            case 0:
-                roomStatus.innerHTML = 'Что это за трек?'
-                break
-            case 1:
-                roomStatus.innerHTML = 'Загружается следующий трек'
-                break
-            case 3:
-                roomStatus.innerHTML = 'Начинаем следующий раунд...'
-                break
-        }
-    }) 
-        
-    
-
-    socket.on('gameover', usersData => {
-        updateUserlist(usersData)
-        playedTracks.innerHTML=""
-    })
+    authorization()
 
     const updateUserlist = data => {
         userlist.innerHTML = ''
@@ -99,44 +104,146 @@ import {Visualizer} from './visualizer.js'
         }
     }
 
-    const trackInfo = (artist, track) => {
-        playedTracks.innerHTML += `<li>artist:${artist} track:${track}</li>`
+    const updateSummary = trackscount => {
+        console.log(trackscount)
     }
 
-    const authorization = () => {
-        //document.body.innerHTML+=
-    //     ('<div class="modal__drop"></div>'+
-    //         '<div class="modal__auth">'+
-    //         '<div class="modal__header">'+
-    //             'Вы зашли в комнату гениев'+
-    //         '</div>'+
-    //         ' <div class="modal__body">'+
-    //                 'Введите никнейм'+
-    //             '</div>'+
-    //         '<div class="modal__footer">'+
-    //     '<input type="text" class="input__nickname" id="login" maxlength="14" autofocus>'+
-    //     '<button class="submit__nickname-button" id="login-button">Войти</button>'+
-    // '</div>'+
-    // '<p class="feedback"></p>'+
-    // '</div>')
-        document.body.style.overflowY='none'
-        const login = document.getElementById('login')
-        const button = document.getElementById('login-button')
-        button.onclick = () => {
-            const nickname = login.value
-            setNickname(nickname.trim())
-        }
-        login.addEventListener('keyup', e => {
-            if(e.key == 'Enter'){
-                button.click()
-            }
-        })
-    }
+    //Socket handlers:
+    socket.on('invalidnickname', data => {
+        const feedback = document.getElementById('feedback')
+        feedback.innerHTML = data.feedback
+    })
+    
 
-    const closeAuthModal = () => {
-        document.querySelector('.modal__auth').remove()
-        document.querySelector('.modal__drop').remove()
-    }
+    socket.on('ready', data => {
+        closeModalDrop()
+        closeAuthModal()
+        ready(data)
+    })
 
-    authorization()
-})()
+
+
+
+}
+
+
+
+ App()   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//     let users
+    
+//     socket.emit('joinroom', roomName)
+
+//     guessForm.addEventListener('submit', e => {
+//         e.preventDefault()
+//         guess(e.target.elements.guess.value)
+//         e.target.elements.guess.value = ''
+//     })
+
+//     const guess = text => {
+//         if(text!='') {
+//             socket.emit('guess', text)
+//         }
+//     }
+
+
+
+//     const invalidNickname = data => {
+//         const feedback = document.querySelector('.feedback')
+//         feedback.innerHTML = data.feedback
+//     }
+    
+//     socket.on('ready', data => {        
+//         users = data.users
+//         console.log(users)
+//         updateUserlist(data)
+//         roomStatus.innerHTML = 'Дождитесь окончания текущего трека!'
+//         closeAuthModal()
+//     })
+
+//     socket.on('updateuserlist', data => {
+//         updateUserlist(data)
+//     })
+
+//     socket.on('invalidnickname', data => {
+//         invalidNickname(data)
+//     })
+
+//     socket.on('playtrack', data => {
+//         visualizer.setNewTrack(data.trackUrl)
+//     })
+
+//     socket.on('trackinfo', data => {
+//         trackInfo(data.artistName, data.trackName)
+//     })
+
+
+
+//     socket.on('statusupdate', status => {
+//         switch (status) {
+//             case 0:
+//                 roomStatus.innerHTML = 'Что это за трек?'
+//                 break
+//             case 1:
+//                 roomStatus.innerHTML = 'Загружается следующий трек'
+//                 break
+//             case 3:
+//                 roomStatus.innerHTML = 'Начинаем следующий раунд...'
+//                 break
+//         }
+//     }) 
+        
+    
+
+//     socket.on('gameover', usersData => {
+//         updateUserlist(usersData)
+//         playedTracks.innerHTML=""
+//     })
+
+
+
+//     const trackInfo = (artist, track) => {
+//         playedTracks.innerHTML += `<li>artist:${artist} track:${track}</li>`
+//     }
+
+//     const authorization = () => {
+//         //document.body.innerHTML+=
+        
+//         document.body.style.overflowY='none'
+//         const login = document.getElementById('login')
+//         const button = document.getElementById('login-button')
+//         button.onclick = () => {
+//             const nickname = login.value
+//             setNickname(nickname.trim())
+//         }
+//         login.addEventListener('keyup', e => {
+//             if(e.key == 'Enter'){
+//                 button.click()
+//             }
+//         })
+//     }
+
+//     const closeAuthModal = () => {
+//         document.querySelector('.modal__auth').remove()
+//         document.querySelector('.modal__drop').remove()
+//     }
+
+//     authorization()
+// })()

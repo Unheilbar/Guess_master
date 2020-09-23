@@ -23,19 +23,12 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //Run when client connects
 io.on('connection', socket => {
-
     socket.on('setnickname', data => {
-        if(socket.roomname) {
-            rooms[socket.roomname].setNickname(socket, data)
-        }
+        if(!socket.nickname && typeof data == 'object' && typeof data.nickname == 'string' && data.nickname!='')
+        rooms[data.roomname].setNickname(socket, data)
         
     })
 
-    socket.on('joinroom', data => {
-        socket.roomname = data
-        socket.join(data)
-    })
-    
     socket.on('guess', data => {
         if(socket.roomname && typeof data === "string") {
            rooms[socket.roomname].guess(data, socket)
