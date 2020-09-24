@@ -349,3 +349,22 @@ input[type=text], textarea, select, button {
     margin-bottom:5px;
     width:300px;
 }
+
+.summary{
+    width:350px;
+    display:flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.title{
+    margin-bottom:10px;
+    display:flex;
+}
+
+.main__content{
+    display:flex;
+    justify-content: space-between;
+}
+

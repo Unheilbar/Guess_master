@@ -40,42 +40,60 @@
         </ul>
       </div>
     </header>
-    <div class="player">
-      <div class="player__display">
-        <canvas id="oscilloscope"></canvas>
-        <div class="statusbar">
-          <div class="statusbar__filler" id="filler">
+        <div class="main__content">
+          <div class="userlist">
+            <p>Игроки в комнате:</p>
+            <ul id='userlist'>
+            </ul>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="room__status">
-      <p id='room__status'>Ожидаем подключения...</p>
-    </div>
-    <div class="userlist">
-      <ul id='userlist'>
-      </ul>
-    </div>
-    <section>
+          <div class="central__content">
+            
+            
+          
+            <div class="player">
+              <div class="player__display">
+                <canvas id="oscilloscope"></canvas>
+                <div class="statusbar">
+                  <div class="statusbar__filler" id="filler">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="room__status">
+              <p id='room__status'>Ожидаем подключения...</p>
+            </div>
+            <div class="summary">
+              <div class="span">
+                <div class="title">Rank</div>
+                <div class = 'rank'></div>
+              </div>
+              <div class="span">
+                <div class="title">Points</div>
+                <div class = "points"></div>
+              </div>
+              <div class="span">
+                <div class="title">Track</div>
+                <div class = "track"></div>
+              </div>      
+            </div>
+            <div class="guess-block">
+              <form class="guess-form">
+                <input type="text" name="guess" id="guess" placeholder="Enter your guess here">
+                <button class='signin-btn'>try</button>
+              </form>
+            </div>
 
-      <div class="tracks">
-        <div class="current-track">
-          <p>current track:</p>
-        </div>
-        <div class="guess-block">
-          <form class="guess-form">
-            <input type="text" name="guess" id="guess" placeholder="Enter your guess here">
-            <button class='signin-btn'>try</button>
-          </form>
-        </div>
+          </div>
 
-        <div class="played-tracks">
-          <p>played tracks:</p>
-          <ul id='played-tracks'>
-
-          </ul>
+            <div class="played__tracks">
+              <p>Последний трек</p>
+              <div id='played__track'>
+                <div id="artist__name">Billie Eilish</div>
+                <div id="track__name">Bad Guy</div>
+                <img src="https://is5-ssl.mzstatic.com/image/thumb/Music114/v4/44/9e/b9/449eb917-b022-f66d-0287-d01f29c399af/source/100x100bb.jpg" alt="no image" id="track__view">
+              </div>
+            </div>
         </div>
-      </div>
     </section>
     <section class="footer">
       <div class="footer__content">

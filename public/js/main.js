@@ -7,10 +7,19 @@ function App() {
     const guessForm = document.querySelector('.guess-form')
     const userlist = document.getElementById('userlist')
     const roomStatus = document.getElementById('room__status')   
-    const playedTracks = document.getElementById('played-tracks')
+    const summaryInfo = document.querySelector('.summary')
+    const currentRank = summaryInfo.querySelector('.rank')
+    const currentPoints = summaryInfo.querySelector('.points')
+    const currentTrackscount = summaryInfo.querySelector('.track')
+    const lastArtist = document.getElementById('artist__name')
+    const lastTrack = document.getElementById('track__name')
+    const lastView = document.getElementById('track__view')
+
+    let users = []
 
     let modalDrop
     let authModalContent
+    let nickname = null
 
     //DOM manipulations
     const showAuthModal = () => {
@@ -55,7 +64,7 @@ function App() {
         const login = document.getElementById('login')
         const button = document.getElementById('login-button')
         button.onclick = () => {
-            const nickname = login.value
+            nickname = login.value
             const data = {
                 roomname:roomName,
                 nickname:nickname
@@ -89,18 +98,37 @@ function App() {
     const ready = data => {     //getting usersData, trackscount, roomstatus
         getRoomStatus()
         updateUserlist(data)
-        updateSummary(data.trackscount)
+        updateSummary(data)
     }
 
     const setStatus = data => {         //0 Дождитесь окончания песни/1 - Загружается следующая песня/2 - Раунд скоро закончится!/3 - Новая игра скоро начнется!
-        console.log(`roomStatus: ${data.status}, songtimeleft: ${data.timeleft}`)
+        console.log(data)
+        const status = data.status
+        let statusContent
+        switch (status){
+            case 0:
+                statusContent = 'Угадайте текущую песню'
+                visualizer.playerAnimation(Date.now() + data.timeleft, false)
+                break
+            case 1:
+                statusContent = 'Следующая песня загружается'
+                break
+            case 2:
+                statusContent = 'Следующая песня скоро начнется'
+                break
+            case 3:
+                statusContent = 'Дождитесь начала следующего раунда'
+                break                
+        }
+
+        roomStatus.innerHTML = statusContent
     }
 
     authorization()
 
     const updateUserlist = data => {
         userlist.innerHTML = ''
-        const users = []
+        users = []
         for(let userInfo in data.users) {
             const username = data.users[userInfo].nickname
             const points = data.users[userInfo].points
@@ -116,8 +144,29 @@ function App() {
         }
     }
 
-    const updateSummary = trackscount => {        //Displays user statistics(rank, trackscount, points)
-        console.log(`trackscount: ${trackscount}`)
+    const updateSummary = data => {        //Displays user statistics(rank, trackscount, points)
+        let points = data.users[nickname].points
+        let trackscount = data.trackscount+1+'/15'
+        let rank = users.findIndex(user => user.username == nickname)+1
+        currentRank.innerHTML = rank
+        currentTrackscount.innerHTML = trackscount
+        currentPoints.innerHTML = points
+       
+        
+    }
+
+    const trackInfo = data => {
+        lastArtist.innerHTML = data.artistName
+        if(data.trackName.length > 30) {
+            lastTrack.innerHTML = data.trackName.substring(0,30) + '...'
+        } else {
+            lastTrack.innerHTML = data.trackName
+        }
+        lastView.setAttribute('src', data.artworkUrl)
+    }
+
+    const gameOver = (data) => {
+        console.log(data)
     }
 
     //Socket handlers:
@@ -144,6 +193,25 @@ function App() {
         setStatus(data)
     })
 
+    socket.on('playtrack', data => {
+        getRoomStatus()
+        visualizer.setNewTrack(data.trackUrl)
+    })
+
+    socket.on('loadingnextntrack', () => {
+        getRoomStatus()
+        visualizer.setLoadingStatus()
+    })
+
+    socket.on('trackinfo', data => {
+        getRoomStatus()
+        trackInfo(data)
+    })
+
+    socket.on('gameover', data => {
+        getRoomStatus()
+        gameOver(data)
+    })
 }
 
 
@@ -206,13 +274,9 @@ function App() {
 //         invalidNickname(data)
 //     })
 
-//     socket.on('playtrack', data => {
-//         visualizer.setNewTrack(data.trackUrl)
-//     })
 
-//     socket.on('trackinfo', data => {
-//         trackInfo(data.artistName, data.trackName)
-//     })
+
+
 
 
 

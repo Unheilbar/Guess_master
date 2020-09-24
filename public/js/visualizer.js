@@ -30,7 +30,6 @@ export function Visualizer() {
           let drawVisual = requestAnimationFrame(drawAlt);
           if(Date.now() - startTime > 30000) {
             cancelAnimationFrame(drawVisual)
-            console.log('hi there')
             this.setLoadingStatus()
             return
           }
@@ -57,6 +56,7 @@ export function Visualizer() {
       }
     
     this.playerAnimation = endTime => {
+      console.log('here')
       const step = () => {
           let milLeft = endTime - Date.now()
           if(milLeft<50) {
@@ -76,7 +76,7 @@ export function Visualizer() {
         audio.preload = 'auto'
         audio.volume = this.volume
         this.drawOscilloscope(Date.now(), audio)
-        this.playerAnimation(Date.now() + 30000)  
+        this.playerAnimation(Date.now() + 30000, false)  
     }
     
     this.setLoadingStatus = () => {
@@ -90,6 +90,5 @@ export function Visualizer() {
         this.canvasCtx.font = '14px Exo'
 
         this.canvasCtx.fillText("ахуенная анимация загрузки", 10, 90);
-        console.log('painting on canvas!!111')
     }
 }

@@ -60,5 +60,9 @@ app.get('/:room', (req, res) => {
     }    
 })
 
+app.get('/favicon.ico', (req, res) => {
+    res.sendFile(path.join(__dirname, 'favicon.ico'))
+})
+
 
 server.listen(config.port, () => {console.log(`Server running on port ${config.port}`)})
