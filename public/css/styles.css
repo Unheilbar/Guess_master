@@ -38,7 +38,7 @@ header a{
 header{
     width: 100%;
     display: flex;
-    
+    margin-bottom:20px;
     margin-top:20px;
 }
 
@@ -228,7 +228,7 @@ a{
     left: 0;
     z-index: 1040;
     background-color: #000000;
-    opacity:0.6;
+    opacity:0.8;
 }
 
 .modal__auth{
@@ -350,12 +350,18 @@ input[type=text], textarea, select, button {
     width:300px;
 }
 
+#playeruserlist{
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
 .summary{
     width:350px;
     display:flex;
     justify-content: space-between;
     margin-top: 20px;
     text-align: center;
+    margin-bottom:20px;
 }
 
 .title{
@@ -368,3 +374,47 @@ input[type=text], textarea, select, button {
     justify-content: space-between;
 }
 
+.played__tracks{
+    text-align: center;
+    width:140px;
+}
+
+#artist__name{
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+#track__name{
+    margin-bottom: 5px;
+}
+
+#track__view{
+    border:1px solid rgba(60, 239, 245, 0.5);
+    margin-top:5px;
+}
+
+#guess{
+    background-color:#1f2833 ;
+    color:#c5c6c7;
+    border-radius:5px;
+    -moz-box-shadow:0 0 2px rgba(44, 152, 185, 0.5);
+    -webkit-box-shadow:0 0 2px rgba(60, 239, 245, 0.5);
+    box-shadow:0 0 2px rgba(132, 220, 255, 0.5);
+    height:48px;
+    font-family: 'Exo 2';
+    font-size:18px;
+    width:300px;
+    padding-left:7px;
+    margin-bottom: 10px;
+}
+
+#guess:focus{
+    -moz-box-shadow:0 0 5px rgba(44, 152, 185, 0.9);
+    -webkit-box-shadow:0 0 5px rgba(60, 239, 245, 0.9);
+    box-shadow:0 0 5px rgba(132, 220, 255, 0.9);
+    transition: 1s;
+}
+
+.central__content{
+    text-align: center;
+}

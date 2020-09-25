@@ -14,6 +14,8 @@ function App() {
     const lastArtist = document.getElementById('artist__name')
     const lastTrack = document.getElementById('track__name')
     const lastView = document.getElementById('track__view')
+    const guessFeedbackField = document.getElementById('guess__feedback')
+    let overModalContent
 
     let users = []
 
@@ -40,8 +42,8 @@ function App() {
             '</div>'+
             '<div id="feedback"></div>'+
             '</div>'
-        document.body.appendChild(authModalContent)
-        document.body.style.overflowY='none'
+            document.body.appendChild(authModalContent)
+            document.body.style.overflowY='none'
     }
 
     const closeAuthModal = () => {
@@ -56,6 +58,34 @@ function App() {
 
     const closeModalDrop = () => {
         modalDrop.remove()
+    }
+
+    const showOverModalDrop = () => {
+        showModalDrop()
+        overModalContent = document.createElement('div')
+        let winnerContent = ''
+        for(let user of users) {
+            if(user){
+                winnerContent+=`<li>${user.username} : ${user.points}</li>`
+            }
+        }
+        overModalContent.innerHTML = 
+            '<div class="modal__auth">'+
+            '<div class="modal__header">'+
+                'Раунд окончен.'+
+            '</div>'+
+            '<div class="modal__body">'+
+                    `<ul>${winnerContent}</ul>`+
+            '</div>'+
+            '<div id="feedback">Следующий раунд скоро начнется</div>'+
+            '</div>'
+            document.body.appendChild(overModalContent)
+            document.body.style.overflowY='none'
+    }
+
+    const closeOverModalDrop = () => {
+        closeModalDrop()
+        overModalContent.remove()
     }
 
     const authorization = () => {
@@ -79,6 +109,18 @@ function App() {
         })
     }
 
+    guessForm.addEventListener('submit', e => {
+        e.preventDefault()
+        guess(e.target.elements.guess.value)
+        e.target.elements.guess.value = ''
+    })
+
+    const guess = text => {
+        if(text!='') {
+            socket.emit('guess', text)
+        }
+    }
+
     const getRoomStatus = () => {
         socket.emit('getstatus')
     }
@@ -99,10 +141,10 @@ function App() {
         getRoomStatus()
         updateUserlist(data)
         updateSummary(data)
+        document.getElementById('guess').focus()
     }
 
     const setStatus = data => {         //0 Дождитесь окончания песни/1 - Загружается следующая песня/2 - Раунд скоро закончится!/3 - Новая игра скоро начнется!
-        console.log(data)
         const status = data.status
         let statusContent
         switch (status){
@@ -132,15 +174,26 @@ function App() {
         for(let userInfo in data.users) {
             const username = data.users[userInfo].nickname
             const points = data.users[userInfo].points
+            const roundpoints = data.users[userInfo].roundpoints
+            const guesstime = data.users[userInfo].guesstime
             users.push({
                 username:username,
-                points:points
+                points:points,
+                roundpoints:roundpoints,
+                guesstime:guesstime
             })
             
         }
         users.sort(function(a, b) {return b.points - a.points})
         for(let user of users){
-            userlist.innerHTML += `<li>${user.username}  ${user.points}</li>`
+            let addition = ''
+            if(user.roundpoints){
+                addition+=`<span style="color:rgb(132, 220, 255)"> +${user.roundpoints}</span>`
+            }
+            if(user.guesstime) {
+                addition += `<span style="color:rgb(44, 152, 185, 0.9); font-size:10px;"> ${(user.guesstime/1000).toFixed(2)} сек</span>`
+            }
+            userlist.innerHTML += `<li>${user.username}  (${user.points})${addition}</li>`
         }
     }
 
@@ -150,9 +203,7 @@ function App() {
         let rank = users.findIndex(user => user.username == nickname)+1
         currentRank.innerHTML = rank
         currentTrackscount.innerHTML = trackscount
-        currentPoints.innerHTML = points
-       
-        
+        currentPoints.innerHTML = points      
     }
 
     const trackInfo = data => {
@@ -165,11 +216,22 @@ function App() {
         lastView.setAttribute('src', data.artworkUrl)
     }
 
+    const guessFeedback = data => {
+        setFeedback(data.feed)
+    }
+
     const gameOver = (data) => {
-        console.log(data)
+        updateUserlist(data)
+        showOverModalDrop()
+        setTimeout(() => closeOverModalDrop(), 10000)
     }
 
     //Socket handlers:
+    socket.on('updateuserlist', data => {
+        updateUserlist(data)
+        updateSummary(data)
+    })
+
     socket.on('invalidnickname', data => {
         const feedback = document.getElementById('feedback')
         feedback.innerHTML = data.feedback
@@ -212,6 +274,10 @@ function App() {
         getRoomStatus()
         gameOver(data)
     })
+
+    socket.on('guess', data => {
+        guessFeedback(data)
+    })
 }
 
 
@@ -239,17 +305,7 @@ function App() {
     
 //     socket.emit('joinroom', roomName)
 
-//     guessForm.addEventListener('submit', e => {
-//         e.preventDefault()
-//         guess(e.target.elements.guess.value)
-//         e.target.elements.guess.value = ''
-//     })
 
-//     const guess = text => {
-//         if(text!='') {
-//             socket.emit('guess', text)
-//         }
-//     }
 
 
 
