@@ -353,6 +353,7 @@ input[type=text], textarea, select, button {
 #playeruserlist{
     padding-bottom: 5px;
     font-weight: bold;
+    width:200px;
 }
 
 .summary{

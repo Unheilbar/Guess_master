@@ -29,6 +29,7 @@ export function Visualizer() {
         const drawAlt = () => {     
           let drawVisual = requestAnimationFrame(drawAlt);
           if(Date.now() - startTime > 30000) {
+            audio.volume = 0
             cancelAnimationFrame(drawVisual)
             this.setLoadingStatus()
             return

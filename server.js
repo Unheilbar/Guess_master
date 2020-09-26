@@ -30,7 +30,7 @@ io.on('connection', socket => {
     })
 
     socket.on('guess', data => {
-        if(socket.roomname && typeof data === "string") {
+        if(socket.roomname && typeof data === "string" && data.length<30) {
            rooms[socket.roomname].guess(data, socket)
         }
     })
