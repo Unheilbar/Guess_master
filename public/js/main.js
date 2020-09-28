@@ -14,7 +14,7 @@ function App() {
     const lastArtist = document.getElementById('artist__name')
     const lastTrack = document.getElementById('track__name')
     const lastView = document.getElementById('track__view')
-    const guessFeedbackField = document.getElementById('guess__feedback')
+    const bmFeedback = document.getElementById('guess__feedback')
     let overModalContent
 
     let users = []
@@ -216,8 +216,8 @@ function App() {
         lastView.setAttribute('src', data.artworkUrl)
     }
 
-    const guessFeedback = data => {
-        setFeedback(data.feed)
+    const guessFeedback = feedback => {
+        bmFeedback.innerHTML = feedback
     }
 
     const gameOver = (data) => {
@@ -262,7 +262,7 @@ function App() {
 
     socket.on('loadingnextntrack', () => {
         getRoomStatus()
-        visualizer.setLoadingStatus()
+        visualizer.setLoadingStatus(Date.now())
     })
 
     socket.on('trackinfo', data => {
@@ -275,7 +275,7 @@ function App() {
         gameOver(data)
     })
 
-    socket.on('guess', data => {
+    socket.on('bmphrase', data => {
         guessFeedback(data)
     })
 }

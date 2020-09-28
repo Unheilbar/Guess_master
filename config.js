@@ -3,6 +3,7 @@ exports.config = function() {
     this.rooms = ['geniuses']
     this.songsPerRound = 10
     this.minNicknameLength = 14
+    this.maxRecentSong = 7 //how much tracks take from itunes
     this.ids = {
         trash:[
             1065981054, //b

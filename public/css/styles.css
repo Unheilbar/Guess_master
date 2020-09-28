@@ -419,3 +419,11 @@ input[type=text], textarea, select, button {
 .central__content{
     text-align: center;
 }
+
+#guess__feedback{
+    width:400px;
+}
+
+.guess-block{
+    margin-left:-23px;
+}
