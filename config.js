@@ -1,32 +1,11 @@
 exports.config = function() {
     this.port = 3000
-    this.rooms = ['geniuses']
+    this.rooms = ['geniuses', 'trash']
     this.songsPerRound = 10
     this.minNicknameLength = 14
     this.maxRecentSong = 7 //how much tracks take from itunes
     this.ids = {
         trash:[
-            1065981054, //b
-        ],
-    
-        geniuses:[
-            277293880, // Lady GaGa
-            184932871, // MIKA
-            1587965, // A Tribe Called Quest
-            1971863, // Beastie Boys
-            465802, // Cypress Hill
-            384304, // EPMD
-            289550, // OutKast
-            13503763, // Swollen Members
-            43680, // The Roots
-            1065981054, //billie Eilish
-            1457206976, // Юра шатунов фейк
-            451505887,  // бутусов фейк
-            262836961, // ADELE
-            459885, // Avril Lavigne
-            1419227, // Beyoncé
-            217005, // Britney Spears
-            64387566, // Katy Perry
             497404139, //юра шатунов
             413496411, //Филип Киркоров
             1065981054, //Вячеслав бутусов
@@ -53,8 +32,45 @@ exports.config = function() {
             553783564, //Михаил Круг
             47815497, //Агутин
             284266257, //Тимати
+            1457206976, // Юра шатунов фейк
+            451505887,  // бутусов фейк
+            352317, //Тату
+            454288519, //Leontiev
+            433689263, //Лайма Вайкули
+            553369592, //Ирина Алегрова
+            298529572, // светлана лобода
+            574441739, // Полина Гагарина
+            576512440, // Стас пьеха
+            459405868, //Лолита
+            452561731, //Иванушки
+            586919688, //bi-2
+            668788973, //splin
+            380174444, //Zemfira
+            668205896, //Дискотека авария
+            101927659, // Руки вверх
+            338703297, //Бьянка
+            448036508, //Soso pavliashvili
+            466873181, //janna aguzarova
+            340415778, //janna friskas
+            549554723, //Anna SemenoВИЧ
+            339737463, //Дмитрий маликов
+        ],
+    
+        geniuses:[
+            1065981054, //billie Eilish
+            262836961, // ADELE
+            1065981054, //billie eilish again
+            602212, //scorpions
+            408932, //rammstein
+            111051, //eminem
+            105998, //2pac
+            42102393, //evanescence
+
+
+
         ]
     }
     return this
 }
+
 //https://itunes.apple.com/lookup?id=362124802&entity=song&limit=5&sort=recent

@@ -84,32 +84,45 @@ export function Visualizer() {
       
       this.canvasCtx.fillRect(0, 0, this.WIDTH, this.HEIGHT)
       
-      const radius = this.HEIGHT/4-10   
-      const gradient = this.canvasCtx.createLinearGradient(this.WIDTH/2-radius, this.HEIGHT/4-radius, this.WIDTH/2+radius, this.HEIGHT/4+radius);
-      gradient.addColorStop(0, 'rgb(60, 239, 245)')
-      gradient.addColorStop(1, "rgb(44, 152, 185)")
+      const radius = this.HEIGHT/4-30
+
       this.canvasCtx.shadowBlur = 24
       this.canvasCtx.shadowColor = 'rgb(44, 152, 185)'
       this.canvasCtx.shadowOffsetX = -8
-      this.canvasCtx.lineWidth = 8
-      this.canvasCtx.strokeStyle = gradient
-      let degreesStart = 0
-      let degreesEnd = 90
+      this.canvasCtx.lineWidth = 4
+      let innerDegreesStart = 0
+      let innerDegreesEnd = 360
+      let gradientRedStart = 69
+      let gradientGreenStart = 162
+      let gradientBlueStart = 158
+      let gradientRedEnd = 102
+      let gradientGreenEnd = 252
+      let gradientBlueEnd = 241
+      let alpha = 0
       const step = () => {
         let stepframe = requestAnimationFrame(step)
         console.log('hi')
-        if(Date.now() - startTime > 5000) {
+        if(Date.now() - startTime > 4000) {
+          console.log('why dont you stop retard')
           cancelAnimationFrame(stepframe)
+          return
         }
-        // this.canvasCtx.fillRect(0, 0, this.WIDTH, this.HEIGHT)
-        this.canvasCtx.clearRect(0, 0, this.WIDTH, this.HEIGHT)        
-        const startAngle = Math.PI*degreesStart/180
-        const endAngle = Math.PI*degreesEnd/180
+        let a = radius*Math.cos(Math.PI*alpha/180)
+        let b = radius*Math.sin(Math.PI*alpha/180)
+        let c = radius*Math.cos(Math.PI*(alpha+180)/180)
+        let d = radius*Math.sin(Math.PI*(alpha+180)/180) 
+        this.canvasCtx.fillRect(0, 0, this.WIDTH, this.HEIGHT)
+        this.canvasCtx.clearRect(0, 0, this.WIDTH, this.HEIGHT)
+        const gradient = this.canvasCtx.createLinearGradient(this.WIDTH/2+a, this.HEIGHT/4+b, this.WIDTH/2+c, this.HEIGHT/4+d)
+        alpha+=3
+        gradient.addColorStop(0, `rgba(${gradientRedStart}, ${gradientGreenStart}, ${gradientBlueStart}, 0)`)
+        gradient.addColorStop(1, `rgba(${gradientRedEnd}, ${gradientGreenEnd}, ${gradientBlueEnd}, 1)`)
+        this.canvasCtx.strokeStyle = gradient        
+        const innerStartAngle = Math.PI*innerDegreesStart/180
+        const innerEndAngle = Math.PI*innerDegreesEnd/180
         this.canvasCtx.beginPath()
-        this.canvasCtx.arc(this.WIDTH/2, this.HEIGHT/4, radius, startAngle , endAngle )
+        this.canvasCtx.arc(this.WIDTH/2, this.HEIGHT/4, radius, innerStartAngle , innerEndAngle )
         this.canvasCtx.stroke()
-        degreesStart+=6
-        degreesEnd+=6
       }
       
       step()
