@@ -2,7 +2,7 @@
 import {Visualizer} from './visualizer.js'
 function App() {
     // set Elements
-    const socket = io()
+    const socket = io.connect("https://peaceful-chamber-24187.herokuapp.com/", {'reconnect':false})
     const visualizer = new Visualizer()
     const guessForm = document.querySelector('.guess-form')
     const userlist = document.getElementById('userlist')
